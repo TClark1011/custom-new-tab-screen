@@ -31,7 +31,11 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@mobily/ts-belt": "^3.13.1",
 		"@vanilla-extract/css": "^1.9.0",
-		"modern-normalize": "^1.1.0"
+		"@vanilla-extract/dynamic": "^2.0.2",
+		"coloring-palette": "^1.0.0",
+		"modern-normalize": "^1.1.0",
+		"pexels": "^1.3.0"
 	}
 }

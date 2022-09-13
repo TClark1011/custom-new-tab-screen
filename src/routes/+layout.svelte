@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as styles from './layout.css';
-	import '@/app.css';
+	import '@/styles/global.css';
 </script>
 
 <svelte:head>
