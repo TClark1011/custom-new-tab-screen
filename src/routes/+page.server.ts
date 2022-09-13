@@ -1,22 +1,32 @@
 import type { Load } from '@sveltejs/kit';
 import pexels from '$/pexels';
-import { randomInt } from '../utils';
-import { A, D, flow, O, pipe } from '@mobily/ts-belt';
+import { randomChance, randomInt, takeRandom, takeRandomUntilSatisfied } from '../utils';
+import { D, F, flow } from '@mobily/ts-belt';
 import type { ShadeKey } from 'coloring-palette';
 import coloringPalette from 'coloring-palette';
+import type { Photo } from 'pexels';
+import { WALLPAPER_KEYWORDS } from '../constants';
 
 export type PageData = {
 	backgroundURL: string;
 	colors: Record<Exclude<ShadeKey, `A${string}`>, string>;
 };
 
-const getRandomPageNumber = () => randomInt(1, 20);
+const getRandomPageNumber = () => randomInt(1, 40);
 
 const PAGE_SIZE = 20;
 
+const photoIsLandscape = (photo: Photo) => photo.width > photo.height;
+const photoIsLargeEnough = (photo: Photo) => photo.width > 1920 && photo.height > 1080;
+
+const photoCanBeUsedAsWallpaper = F.both(photoIsLandscape, photoIsLargeEnough);
+
 export const load: Load<never, never, never, PageData> = async () => {
+	const randomExtraKeyword = takeRandom(WALLPAPER_KEYWORDS);
+	const useExtraKeyword = randomChance(0.6);
+
 	const photosResult = await pexels.photos.search({
-		query: 'wallpaper',
+		query: `wallpaper ${useExtraKeyword ? randomExtraKeyword : ''}`,
 		page: getRandomPageNumber(),
 		per_page: PAGE_SIZE
 	});
@@ -25,9 +35,13 @@ export const load: Load<never, never, never, PageData> = async () => {
 		throw new Error(photosResult.error);
 	}
 
-	const selectedPhoto = pipe(photosResult.photos, A.shuffle, A.head, O.getExn);
+	const selectedPhoto = takeRandomUntilSatisfied(photosResult.photos, photoCanBeUsedAsWallpaper);
 
-	const baseColors = D.deleteKeys(coloringPalette(selectedPhoto.avg_color, 'hex'), [
+	if (!selectedPhoto) {
+		throw new Error('No landscape photos found');
+	}
+
+	const baseColors = D.deleteKeys(coloringPalette(selectedPhoto.avg_color ?? '', 'hex'), [
 		'A100',
 		'A200',
 		'A400',

@@ -17,7 +17,8 @@ export const bgImage = style({
 	left: 0,
 	height: '100%',
 	width: '100%',
-	objectFit: 'cover'
+	objectFit: 'cover',
+	backgroundColor: themeVars.colors.primary['200']
 });
 
 export const shape = style({
