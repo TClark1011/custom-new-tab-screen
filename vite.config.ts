@@ -5,7 +5,7 @@ import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 const config: UserConfig = {
 	plugins: [sveltekit(), vanillaExtractPlugin()],
 	ssr: {
-		noExternal: ['@mobily/ts-belt']
+		noExternal: ['@mobily/ts-belt', 'coloring-palette', 'pexels']
 	}
 };
 
