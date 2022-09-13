@@ -10,6 +10,7 @@
 
 <svelte:head>
 	<title>Set in layout</title>
+	<link rel="stylesheet" href="node_modules/modern-normalize/modern-normalize.css" />
 </svelte:head>
 
 <main class={styles.content} style={extraStyles}>
