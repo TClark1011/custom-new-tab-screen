@@ -1,15 +1,15 @@
 import type { Load } from '@sveltejs/kit';
 import pexels from '$/pexels';
 import { randomChance, randomInt, takeRandom, takeRandomUntilSatisfied } from '../utils';
-import { D, F, flow } from '@mobily/ts-belt';
-import type { ShadeKey } from 'coloring-palette';
-import coloringPalette from 'coloring-palette/dist/index';
+import { F } from '@mobily/ts-belt';
 import type { Photo } from 'pexels';
 import { WALLPAPER_KEYWORDS } from '../constants';
+import type { Palette } from 'palette-by-numbers';
+import { generatePalette } from 'palette-by-numbers';
 
 export type PageData = {
 	backgroundURL: string;
-	colors: Record<Exclude<ShadeKey, `A${string}`>, string>;
+	colors: Palette;
 };
 
 const getRandomPageNumber = () => randomInt(1, 40);
@@ -41,14 +41,7 @@ export const load: Load<never, never, never, PageData> = async () => {
 		throw new Error('No landscape photos found');
 	}
 
-	const baseColors = D.deleteKeys(coloringPalette(selectedPhoto.avg_color ?? '', 'hex'), [
-		'A100',
-		'A200',
-		'A400',
-		'A700'
-	] as const);
-
-	const colors = D.map(baseColors, flow(D.getUnsafe('color'), String));
+	const colors = generatePalette(selectedPhoto.avg_color);
 
 	return {
 		backgroundURL: selectedPhoto.src.original,

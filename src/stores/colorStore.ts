@@ -1,4 +1,4 @@
 import { writable } from 'svelte/store';
-import type { ShadeKey } from 'coloring-palette';
+import type { Palette } from 'palette-by-numbers';
 
-export const colorStore = writable<Record<Exclude<ShadeKey, `A${string}`>, string> | null>(null);
+export const colorStore = writable<Palette | null>(null);
