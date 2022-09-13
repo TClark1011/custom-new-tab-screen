@@ -3,7 +3,7 @@ import pexels from '$/pexels';
 import { randomChance, randomInt, takeRandom, takeRandomUntilSatisfied } from '../utils';
 import { D, F, flow } from '@mobily/ts-belt';
 import type { ShadeKey } from 'coloring-palette';
-import coloringPalette from 'coloring-palette';
+import coloringPalette from 'coloring-palette/dist/index';
 import type { Photo } from 'pexels';
 import { WALLPAPER_KEYWORDS } from '../constants';
 
