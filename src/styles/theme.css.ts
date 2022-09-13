@@ -1,5 +1,4 @@
-import { createTheme, createThemeContract, createVar } from '@vanilla-extract/css';
-import type { MaterialColorPalette } from '../lib/material-dynamic-colors';
+import { createTheme, createThemeContract } from '@vanilla-extract/css';
 
 export const primaryColorVars = createThemeContract({
 	50: null,
@@ -14,7 +13,7 @@ export const primaryColorVars = createThemeContract({
 	900: null
 });
 
-export const theme = createTheme({
+export const [themeClass, themeVars] = createTheme({
 	colors: {
 		primary: primaryColorVars,
 		gray: {
@@ -29,5 +28,16 @@ export const theme = createTheme({
 			'800': '#1E2229',
 			'900': '#060708'
 		}
+	},
+	spacing: {
+		xs: '2px',
+		sm: '4px',
+		md: '8px',
+		lg: '16px',
+		xl: '32px',
+		xxl: '64px'
+	},
+	font: {
+		heading: '"Bebas Neue", sans-serif'
 	}
 });
